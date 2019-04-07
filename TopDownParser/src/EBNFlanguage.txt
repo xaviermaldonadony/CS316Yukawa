@@ -1,0 +1,21 @@
+ <fun def list> --> <fun def> | <fun def> <fun def list>
+ <fun def> --> "(" "define" <header> <exp> ")"
+ <header> --> "(" <fun name> <parameter list> ")"
+ <fun name> --> <id>
+ <parameter list> --> epsilon | <id> <parameter list>
+ <exp> --> <atom> | <quote> <S exp> | <list exp>
+ <atom> --> <id> | <int> | <float> | <floatE> | <false> | <true>
+ <S exp> --> <atomic S exp> | "(" [ <S exp> <period> <S exp> ] ")"
+ <atomic S exp> --> <atom>
+ <list exp> --> "(" <list exp inside> ")"
+ <list exp inside> --> <if> | <cond> | <fun call> | <operator exp>
+ <if> --> "if" <exp> <exp> <exp>
+ <cond> --> "cond" <case list>
+ <case list> --> <case exp> | <case exp> <case list>
+ <case exp> --> "(" ( <case> | <else case> ) ")"
+ <case> --> <exp> <exp>
+ <else case> --> "else" <exp>
+ <fun call> --> <fun name> <exp list>
+ <operator exp> --> <operator> <exp list>
+ <operator> --> + | - | * | / | < | <= | > | >= | = | "and" | "or" | "not" | "equal" | "car" | "cdr" | "cons"
+ <exp list> --> epsilon | <exp> <exp list>	
