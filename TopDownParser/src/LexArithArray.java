@@ -20,8 +20,8 @@
 
  state     token accepted
 
- Id        identifiers
- Int       integers
+ Primary.Id        identifiers
+ Primary.Int       integers
  Float     floats without exponentiation part
  FloatE    floats with exponentiation part
  Plus      +
@@ -113,7 +113,7 @@ public abstract class LexArithArray extends IO
 
     // By enumerating the non-final states first and then the final states,
     // test for a final state can be done by testing if the state's ordinal number
-    // is greater than or equal to that of Id.
+    // is greater than or equal to that of Primary.Id.
 
     // The following variables of "IO" class are used:
 

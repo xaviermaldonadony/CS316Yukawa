@@ -96,7 +96,7 @@ public abstract class Parser extends LexArithArray
         LinkedList<TermItem> termItemList = new LinkedList<TermItem>();
 
         Term term = term();
-        termItemList.add(new SingleTermItem(term));
+        termItemList.add(new TermItem.SingleTermItem(term));
         while ( state == State.Plus | state == State.Minus )
         {
             State op = state;
@@ -118,16 +118,16 @@ public abstract class Parser extends LexArithArray
         LinkedList<PrimaryItem> primaryItemList = new LinkedList<PrimaryItem>();
 
         Primary primary = primary();
-        primaryItemList.add(new SinglePrimaryItem(primary));
+        primaryItemList.add(new PrimaryItem.SinglePrimaryItem(primary));
         while ( state == State.Times | state == State.Div )
         {
             State op = state;
             getToken();
             primary = primary();
             if ( op == State.Times )
-                primaryItemList.add(new MulPrimaryItem(primary));
+                primaryItemList.add(new PrimaryItem.MulPrimaryItem(primary));
             else // op == State.Div
-                primaryItemList.add(new DivPrimaryItem(primary));
+                primaryItemList.add(new PrimaryItem.DivPrimaryItem(primary));
         }
         return new Term(primaryItemList);
     }
@@ -135,25 +135,25 @@ public abstract class Parser extends LexArithArray
     public static Primary primary()
 
     // <primary> --> <id> | <int> | <float> | <floatE> | "(" <E> ")"
-
+    //⟨primary⟩ → ⟨var primary⟩ | ⟨int⟩ | ⟨float⟩ | ⟨floatE⟩ | "(" ⟨expr⟩ ")" | − ⟨primary⟩ | ! ⟨primary⟩ | ⟨fun call primary⟩
     {
         switch ( state )
         {
             case Id:
 
-                Id id = new Id(t);
+                Primary.Id id = new Primary.Id(t);
                 getToken();
                 return id;
 
             case Int:
 
-                Int intElem = new Int(Integer.parseInt(t));
+                Primary.Int intElem = new Primary.Int(Integer.parseInt(t));
                 getToken();
                 return intElem;
 
             case Float: case FloatE:
 
-            Floatp floatElem = new Floatp(Float.parseFloat(t));
+            Primary.Floatp floatElem = new Primary.Floatp(Float.parseFloat(t));
             getToken();
             return floatElem;
 
@@ -164,7 +164,7 @@ public abstract class Parser extends LexArithArray
                 if ( state == State.RParen )
                 {
                     getToken();
-                    Parenthesized paren = new Parenthesized(e);
+                    Primary.Parenthesized paren = new Primary.Parenthesized(e);
                     return paren;
                 }
                 else
@@ -179,86 +179,86 @@ public abstract class Parser extends LexArithArray
                 return null;
         }
     }
-
-
-    public static FunDefList funDefList()
-    {
-    // ⟨fun def list⟩ → { ⟨fun def⟩ }+
-    //⟨fun def⟩ → ⟨header⟩ ⟨body⟩
-    //⟨header⟩ → ⟨fun name⟩ "(" [ ⟨parameter list⟩ ] ")"
-    //⟨fun name⟩ → ⟨id⟩
-        LinkedList<FunDef> funDefList = new LinkedList<>();
-
-        FunDef funDef = funDef();
-        funDefList.add(funDef);
-
-        while(state == State.Id)
-        {
-            funDef = funDef();
-            funDefList.add(funDef);
-        }
-        return new  FunDefList(funDefList);
-
-    }
-
-    public static FunDef funDef()
-    {
-        //⟨fun def⟩ → ⟨header⟩ ⟨body⟩
-        //⟨header⟩ → ⟨fun name⟩ "(" [ ⟨parameter list⟩ ] ")
-        //⟨fun name⟩ → ⟨id⟩
-        if(state == State.Id) {
-            Header header = header();
-            Body body = body();
-
-            return FunDef(header, body);
-        }
-        else
-            errorMsg(5);
-
-    }
-    public static Header header()
-    {
-        //⟨header⟩ → ⟨fun name⟩ "(" [ ⟨parameter list⟩ ] ")"
-        FunName = funName();
-        if(state == State.LParen)
-        {
-            getToken();
-            ParameterList parameterList = parameterList();
-            if(state == State.RParen) {
-                getToken();
-                return Header(funName, parameterList);
-            }
-            else
-                errorMsg(1);
-        }
-        return null;
-    }
-    public static FunName funName()
-    {
-        if(state == State.Id)
-        {
-           Id id = new Id(t);
-           getToken();
-           return new FunName(id);
-        }
-        return null;
-    }
-    pubic static Body body()
-    {
-        if (state == State.LBracket)
-        {
-            getToken();
-            Slist slist = SList();
-            if(state == State.Rparen)
-            {
-                getToken();
-                return Body(slist);
-            }
-            else
-                display(t);
-        }
-        return null;
-    }
+// Parser Incomplete
+//
+//    public static FunDefList funDefList()
+//    {
+//    // ⟨fun def list⟩ → { ⟨fun def⟩ }+
+//    //⟨fun def⟩ → ⟨header⟩ ⟨body⟩
+//    //⟨header⟩ → ⟨fun name⟩ "(" [ ⟨parameter list⟩ ] ")"
+//    //⟨fun name⟩ → ⟨id⟩
+//        LinkedList<FunDef> funDefList = new LinkedList<>();
+//
+//        FunDef funDef = funDef();
+//        funDefList.add(funDef);
+//
+//        while(state == State.Id)
+//        {
+//            funDef = funDef();
+//            funDefList.add(funDef);
+//        }
+//        return new  FunDefList(funDefList);
+//
+//    }
+//
+//    public static FunDef funDef()
+//    {
+//        //⟨fun def⟩ → ⟨header⟩ ⟨body⟩
+//        //⟨header⟩ → ⟨fun name⟩ "(" [ ⟨parameter list⟩ ] ")
+//        //⟨fun name⟩ → ⟨id⟩
+//        if(state == State.Id) {
+//            Header header = header();
+//            Body body = body();
+//
+//            return FunDef(header, body);
+//        }
+//        else
+//            errorMsg(5);
+//
+//    }
+//    public static Header header()
+//    {
+//        //⟨header⟩ → ⟨fun name⟩ "(" [ ⟨parameter list⟩ ] ")"
+//        FunName = funName();
+//        if(state == State.LParen)
+//        {
+//            getToken();
+//            ParameterList parameterList = parameterList();
+//            if(state == State.RParen) {
+//                getToken();
+//                return Header(funName, parameterList);
+//            }
+//            else
+//                errorMsg(1);
+//        }
+//        return null;
+//    }
+//    public static FunName funName()
+//    {
+//        if(state == State.Id)
+//        {
+//           Primary.Id id = new Primary.Id(t);
+//           getToken();
+//           return new FunName(id);
+//        }
+//        return null;
+//    }
+//    public static Body body()
+//    {
+//        if (state == State.LBracket)
+//        {
+//            getToken();
+//            Slist slist = SList();
+//            if(state == State.Rparen)
+//            {
+//                getToken();
+//                return Body(slist);
+//            }
+//            else
+//                display(t);
+//        }
+//        return null;
+//    }
 
 
 

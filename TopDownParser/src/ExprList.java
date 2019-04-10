@@ -10,8 +10,10 @@ public class ExprList
 
     void printParseTree(String indent)
     {
-        for ( Expr a : exprList )
+        for ( Expr a : exprList ) {
+            IO.displayln(indent + indent.length() + " <expr list>");
             a.printParseTree(indent);
+        }
     }
 
 //    void emitInstructions()
@@ -33,8 +35,10 @@ class Expr
 
     void printParseTree(String indent)
     {
-        for ( BoolTerm a :  boolTermList)
+        for ( BoolTerm a :  boolTermList) {
+            IO.displayln(indent + indent.length() + " <expr>");
             a.printParseTree(indent);
+        }
     }
 
 //    void emitInstructions()
@@ -55,31 +59,38 @@ class BoolTerm
 
     void printParseTree(String indent)
     {
-        for (BoolPrimary a :  boolPrimaryList)
+        for (BoolPrimary a :  boolPrimaryList) {
+            IO.displayln(indent + indent.length() + " <BoolTerm>");
             a.printParseTree(indent);
+        }
+
     }
 }
 //⟨boolPrimary⟩ → ⟨E⟩ [ ⟨comp op⟩ ⟨E⟩ ] needs to be tested
 class BoolPrimary
 {
     E e;
-    BoolPrimary(E e)
+    CompOp compOp;
+    BoolPrimary(E e, CompOp compOp)
     {
         this.e = e;
+        this.compOp = compOp;
     }
     void printParseTree(String indent)
     {
+        {
         IO.displayln(indent + indent.length() + " <E>");
         e.printParseTree(indent);
+        }
     }
 }
 
-class CompOpBoolPrimary
+class CompOp
 {
     String compOp;
     E e;
 
-    CompOpBoolPrimary(String compOp, E e)
+    CompOp(String compOp, E e)
     {
         this.compOp = compOp;
         this.e = e;
@@ -90,4 +101,3 @@ class CompOpBoolPrimary
         e.printParseTree(indent);
     }
 }
-

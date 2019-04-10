@@ -17,26 +17,40 @@ public class SList
 
 abstract class Statement
 {
-    abstract void printParseTree(String indent);
+    void printParseTree(String indent)
+    {
+
+            IO.display(indent.length() + " <Statement>");
+
+    }
 
     //abstract void emitInstructions();
 }
 class Cond extends Statement
 {
-    private String i;
+    private String _if;
+    private String _else;
     Expr expr;
+    Statement statement;
 
-    Cond(Expr expr)
+    Cond(String i, Expr expr, Statement statement,String _else)
     {
-        this.i = "if";
+        this._if = i;
         this.expr = expr;
+        this.statement = statement;
+        if (_else != null)
+            this._else = _else;
     }
 
     void printParseTree(String indent)
     {
+        super.printParseTree(indent);
         IO.displayln(indent + indent.length() + " <cond>");
-        IO.displayln(indent + indent.length() + i);
+        IO.displayln(indent + indent.length() + this._if);
+        if(this._else != null)
+            IO.displayln(indent + indent.length() + this._else);
 
+        expr.printParseTree(indent);
     }
 }
 
@@ -55,7 +69,8 @@ class While extends Statement
 
     void printParseTree(String indent)
     {
-        IO.displayln(indent + indent.length() + " <cond>");
+        super.printParseTree(indent);
+        IO.displayln(indent + indent.length() + " <while>");
         IO.displayln(indent + indent.length() + w);
     }
 }
@@ -71,15 +86,16 @@ class Block extends Statement
 
     void printParseTree(String indent)
     {
+        super.printParseTree(indent);
         IO.displayln(indent + indent.length() + " <SList>");
     }
 }
 
-class FunCallStatement extends Statement {
+class FunCall extends Statement {
     String funName;
     ExprList exprList;
 
-    FunCallStatement(String funName, ExprList exprList) {
+    FunCall(String funName, ExprList exprList) {
         this.funName = funName;
         this.exprList = exprList;
     }
@@ -91,7 +107,8 @@ class FunCallStatement extends Statement {
 
 //        IO.displayln(indent2 + indent2.length() + " <fun call>");
 //        IO.displayln(indent3 + indent3.length() + " <fun name> " + funName);
-        IO.displayln(indent.length() + " <fun name> " + funName);
+        super.printParseTree(indent);
+        IO.displayln(indent + indent.length() + " <fun name> " + funName);
         exprList.printParseTree(indent);
     }
 }
@@ -108,6 +125,8 @@ class Print extends Statement
     }
     void printParseTree(String indent)
     {
+        super.printParseTree(indent);
         IO.displayln(indent + indent.length() + " Print");
+        expr.printParseTree(indent);
     }
 }

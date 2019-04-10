@@ -18,7 +18,6 @@ public class FunDef {
         IO.displayln(indent + indent.length() + " <header>");
         header.printParseTree(indent1);
         body.printParseTree(indent1);
-
     }
 }
 class Header
@@ -115,6 +114,7 @@ class Body
     {
         String indent1 = indent + " ";
 
-        IO.displayln(indent + indent.length() + " <s list>");
+        IO.displayln(indent + indent.length() + " <Body>");
+        sList.printParseTree(indent);
     }
 }

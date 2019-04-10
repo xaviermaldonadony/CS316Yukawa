@@ -1,0 +1,33 @@
+AssignmentVR
+    ArrayConstructor
+    AssignmentVR
+    ExprRightSide
+    RightSide
+
+ExprList
+    BoolPrimary
+    BooLTerm
+    CompOp
+    Expr
+    ExprList
+
+FunDef
+    Body
+    FunDef
+    Header
+    Parameter
+    ParameterList
+SList
+    Block
+    Cond
+    FunCall
+    Print
+    Slist
+    Statement
+    While
+Var
+    ArrayVar
+    EList
+    Var
+
+24 classes total.

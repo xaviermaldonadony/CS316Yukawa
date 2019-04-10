@@ -30,19 +30,19 @@ class SubTermItem extends TermItem
         Class    eClass =    eVal.getClass();
         Class termClass = termVal.getClass();
 
-        if ( eClass == IntVal.class && termClass == IntVal.class )
+        if ( eClass == Val.IntVal.class && termClass == Val.IntVal.class )
         {
-            ((IntVal)eVal).val = ((IntVal)eVal).val - ((IntVal)termVal).val;
+            ((Val.IntVal)eVal).val = ((Val.IntVal)eVal).val - ((Val.IntVal)termVal).val;
             return eVal;
         }
-        else if ( eClass == IntVal.class ) // termClass == FloatVal.class
+        else if ( eClass == Val.IntVal.class ) // termClass == Val.FloatVal.class
         {
-            ((FloatVal)termVal).val = ((IntVal)eVal).val - ((FloatVal)termVal).val;
+            ((Val.FloatVal)termVal).val = ((Val.IntVal)eVal).val - ((Val.FloatVal)termVal).val;
             return termVal;
         }
-        else // eClass == FloatVal.class
+        else // eClass == Val.FloatVal.class
         {
-            ((FloatVal)eVal).val = eVal.floatVal() - termVal.floatVal();
+            ((Val.FloatVal)eVal).val = eVal.floatVal() - termVal.floatVal();
             return eVal;
         }
     }
